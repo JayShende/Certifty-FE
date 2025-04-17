@@ -6,3 +6,4 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const LOGIN_DB="http://localhost:5000/login";
+export const server_URL="http://localhost:5000/generate-certificate";

@@ -9,11 +9,12 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {useRef, useState } from "react"
+import {useRef } from "react"
 import axios from "axios"
 import { ToastAction } from "@/components/ui/toast"
 import {  useToast } from "@/hooks/use-toast"
-import { ToastDemo } from "@/pages/test"
+import { Toaster } from "./ui/toaster"
+import { useNavigate } from "react-router-dom"
 
 export function LoginForm({
   className,
@@ -22,8 +23,8 @@ export function LoginForm({
   
   const emailRef=useRef<HTMLInputElement>(null);
   const pwdRef=useRef<HTMLInputElement>(null);
-  const [res,setRes]=useState<boolean>(false);
   const { toast } = useToast();
+  const navigate=useNavigate();
 
  async function login(event: React.FormEvent)
   {
@@ -38,16 +39,33 @@ export function LoginForm({
         password:password
       }
     })
-    setRes(response.data.result);
+
     if(!response.data.result)
     {
       console.log("Hello");
       toast( {
         variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem with your request.",
+        title: "Invalid Credentails.",
+        description: "There was a problem with your Email/Password.",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       })
+    }
+    else{
+      localStorage.setItem("token",response.data.token);
+      localStorage.setItem("Logged_status","true");
+      toast({
+        description: "Login Succesfull ",
+      })
+      setTimeout(()=>{
+        toast({
+          description: "Redirecting To DashBoard ",
+        })
+        setTimeout(()=>{
+          navigate("/dashboard")
+        },1000);
+      },1000);
+
+     
     }
   }
 
@@ -90,6 +108,7 @@ export function LoginForm({
           </form>
         </CardContent>
       </Card>
+      <Toaster/>
       {/* <ToastDemo/> */}
     </div>
   )

@@ -1,14 +1,19 @@
 
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
+import { Dashboard } from './pages/dashBoard'
 import HomePage from './pages/homepage'
-import { ToastDemo } from './pages/test'
 
 function App() {
 
   return (
-    <div>
-{/* <HomePage/> */}
-<ToastDemo/>
+    <div className='w-screen h-screen'>
+      <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<HomePage/>}/>
+        <Route path='/dashboard' element={<Dashboard/>}/>
+      </Routes>
+      </BrowserRouter>
     </div>
   )
 }
